@@ -8,6 +8,7 @@
     "test:watch": "mocha --watch \"test/**/*.spec.js\"",
     "lint": "eslint lib test"
   },
+  "homepage": "https://github.com/tewen/deep-cuts.git",
   "keywords": [
     "Util",
     "Useful",
@@ -15,6 +16,10 @@
   ],
   "author": "Trevor Ewen",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tewen/deep-cuts.git"
+  },
   "engines": {
     "node": ">=7.6.0",
     "npm": ">=4.1.2"

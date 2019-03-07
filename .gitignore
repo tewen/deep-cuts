@@ -1,0 +1,12 @@
+.idea
+*.iml
+node_modules/
+client/build
+log/
+tmp
+yarn-error.log
+.DS_Store
+resources/cache
+missing-issue-contract-keys.json
+create-droplet.sh
+.env

@@ -21,6 +21,21 @@ console.log(safeJsonParse(JSON.stringify({message: 'I will be safely parsed'})))
 
 ### Methods
 
+#### acceptNoArguments()
+
+Creates a function that accepts no arguments at call time. Behaves similar to lodash [partial](https://lodash.com/docs/4.17.11#partial) method, arguments can be provided at create time. None can be passed at call time.
+
+```JavaScript
+function myFunction(...args) {
+  console.log(`I was called with ${args.length} arguments.`);
+}
+
+acceptNoArguments(myFunction)(0, 1, 2); // I was called with 0 arguments.
+
+acceptNoArguments(myFunction, 3, 4)(0, 1, 2); // I was called with 2 arguments.
+```
+
+
 #### safeJsonParse()
 
 Wrapper around JSON.parse that will not throw errors for nil or poorly formatted strings. Returns null in any invalid case.

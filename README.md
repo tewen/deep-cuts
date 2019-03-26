@@ -35,6 +35,16 @@ acceptNoArguments(myFunction)(0, 1, 2); // I was called with 0 arguments.
 acceptNoArguments(myFunction, 3, 4)(0, 1, 2); // I was called with 2 arguments.
 ```
 
+
+#### escapeForRegExp(str)
+
+Escapes any special characters so the strings can safely be placed in a RegExp constructor.
+
+```JavaScript
+console.log(escapeForRegExp('function test() { return 5 * 5; }')); // function test\(\) \{ return 5 \* 5; \}
+```
+
+
 #### flattenObject(obj)
 
 Flattens an object so that every property is available at the top-level via the same key path as a property string. Compatible with lodash [_.get](https://lodash.com/docs/4.17.11#get) / [_.set](https://lodash.com/docs/4.17.11#set).
@@ -63,6 +73,39 @@ flattenObject(obj);
 }
 
 **/
+```
+
+
+#### stringToBoolean(str)
+
+Usually used for url parameters, converts null, undefined, 0, false, or '' to false even if they are strings. All other values are true.
+
+```JavaScript
+console.log(stringToBoolean('0')); // false
+
+console.log(stringToBoolean('null')); // false
+
+console.log(stringToBoolean('undefined')); // false
+
+console.log(stringToBoolean('false')); // false
+
+console.log(stringToBoolean('')); // false
+
+console.log(stringToBoolean(0)); // false
+
+console.log(stringToBoolean(null)); // false
+
+console.log(stringToBoolean(undefined)); // false
+
+console.log(stringToBoolean(false)); // false
+
+console.log(stringToBoolean()); // false
+
+console.log(stringToBoolean(1)); // true
+
+console.log(stringToBoolean({})); // true
+
+console.log(stringToBoolean(true)); // true
 ```
 
 

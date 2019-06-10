@@ -76,6 +76,17 @@ flattenObject(obj);
 ```
 
 
+#### isJsonString(str)
+
+Returns a boolean that specifies whether the string is parsable JSON.
+
+```JavaScript
+const str = JSON.stringify({red: 5, green: 6});
+
+isJsonString(str); // true
+``` 
+
+
 #### stringToBoolean(str)
 
 Usually used for url parameters, converts null, undefined, 0, false, or '' to false even if they are strings. All other values are true.

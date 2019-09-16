@@ -36,6 +36,94 @@ acceptNoArguments(myFunction, 3, 4)(0, 1, 2); // I was called with 2 arguments.
 ```
 
 
+#### csvRowsToObjects(rows, [options={queryStringsToObjects: false, jsonStringsToObjects: false, parseFloats: false, trimValues: false, listDelimiter: ','}])
+
+Takes an array of arrays as input and maps the headers out to objects in a consistent manner. Supports nesting with dot properties and array value types.
+
+```JavaScript
+const rows = [
+ ['red', 'green[]', 'blue.forty.goodTimes'],
+ ['1', 'Iron Maiden', 'Ronnie James'],
+ ['2', 'Koolaid,Hawaiian Punch', 'Peter Griffin']
+];
+
+csvRowsToObjects(rows);
+
+/** Output
+[
+    {
+      red: '1',
+      green: ['Iron Maiden'],
+      blue: {
+        forty: {
+          goodTimes: 'Ronnie James'
+        }
+      }
+    },
+    {
+      red: '2',
+      green: ['Koolaid', 'Hawaiian Punch'],
+      blue: {
+        forty: {
+          goodTimes: 'Peter Griffin'
+        }
+      }
+    }
+  ]
+**/
+```
+
+##### Options
+* **queryStringsToObjects**: Encodes query strings in array cells to objects.
+* **jsonStringsToObjects**: Supports JSON objects in array cells.
+* **parseFloats**: Parses any number found into a float. 
+* **trimValues**: Trims extra whitespace in values.
+* **listDelimiter**: Default is comma, can be any character used for array delimiting.
+
+
+#### objectsToCsvRows(objects, [options={queryStringsToObjects: false, jsonStringsToObjects: false, listDelimiter: ','}])
+
+This method is the inverse of the above method. This will take the nested objects and get them back to CSV rows format.
+
+```JavaScript
+const objects = [
+{
+  red: '1',
+  green: ['Iron Maiden'],
+  blue: {
+    forty: {
+      goodTimes: 'Ronnie James'
+    }
+  }
+},
+{
+  red: '2',
+  green: ['Koolaid', 'Hawaiian Punch'],
+  blue: {
+    forty: {
+      goodTimes: 'Peter Griffin'
+    }
+  }
+}
+];
+
+objectsToCsvRows(objects);
+
+/** Output
+[
+ ['red', 'green[]', 'blue.forty.goodTimes'],
+ ['1', 'Iron Maiden', 'Ronnie James'],
+ ['2', 'Koolaid,Hawaiian Punch', 'Peter Griffin']
+]
+**/
+```
+
+##### Options
+* **queryStringsToObjects**: Encodes query strings in array cells to objects.
+* **jsonStringsToObjects**: Supports JSON objects in array cells.
+* **listDelimiter**: Default is comma, can be any character used for array delimiting.
+
+
 #### escapeForRegExp(str)
 
 Escapes any special characters so the strings can safely be placed in a RegExp constructor.

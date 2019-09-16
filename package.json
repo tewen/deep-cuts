@@ -1,6 +1,6 @@
 {
   "name": "deep-cuts",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Useful utilities and rare b-sides.",
   "main": "index.js",
   "scripts": {

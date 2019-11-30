@@ -164,6 +164,19 @@ flattenObject(obj);
 ```
 
 
+#### functionOrValue(fnOrValue, [...args])
+
+Returns either the value given or the return value of the function passed in. Can be called with optional arguments (...args). 
+Also cascades downward if functions return functions.
+
+```JavaScript
+console.log(functionOrValue(true)); // true
+console.log(functionOrValue(() => false)); // false
+console.log(functionOrValue((a, b, c) => a + b + c, 5, 6, 7)); // 18
+console.log(functionOrValue((a, b, c) => () => a + c, 5, 6, 7)); // 12
+```
+
+
 #### isJsonString(str)
 
 Returns a boolean that specifies whether the string is parsable JSON.

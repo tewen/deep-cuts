@@ -233,6 +233,24 @@ console.log(safeJsonParse("{\"bad_key: \"value\"}")); // null
 console.log(safeJsonParse(undefined)); // null
 ```
 
+
+#### tryCatch(tryFn,[catchFn])
+
+Functional, async tryCatch wrapper that provides an object with a response and error for alternative control flow.
+
+```JavaScript
+async function trySomething() {...}
+async function catchSomething(e) {
+  // DO SOME PASS THROUGH WORK HERE, OPTIONAL
+  return e;
+}
+
+const { response, error } = tryCatch(trySomething, catchSomething);
+
+// response is the result of the trySomething function
+// error is the error if no catchFn, or the return value of the catchFn
+```
+
 ### Contribution Guidelines
 
 Fork the respository and install all the dependencies:

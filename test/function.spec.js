@@ -2,7 +2,7 @@ const chai = require('chai');
 const { expect } = chai;
 const sinon = require('sinon');
 
-const { acceptNoArguments, functionOrValue } = require('../');
+const { acceptNoArguments, functionOrValue, tryCatch } = require('../');
 
 chai.use(require('sinon-chai'));
 
@@ -77,6 +77,56 @@ describe('function', function () {
       expect(functionOrValue(fn, 78, [55, 66, 77])).to.be.true;
       expect(stub).to.have.been.calledOnce;
       expect(stub).to.have.been.calledWith(78, [55, 66, 77]);
+    });
+  });
+
+  describe('tryCatch()', function () {
+    let tryFn;
+    let catchFn;
+
+    it('should play nice with a sync tryFn', async function () {
+      tryFn = sinon.stub().returns({ success: 500 });
+      const { response, error } = await tryCatch(tryFn);
+      expect(response).to.eql({ success: 500 });
+      expect(error).to.be.undefined;
+    });
+
+    it('should play nice with an async tryFn', async function () {
+      tryFn = sinon.stub().resolves({ success: 500 });
+      const { response, error } = await tryCatch(tryFn);
+      expect(response).to.eql({ success: 500 });
+      expect(error).to.be.undefined;
+    });
+
+    it('should provide the error only in the error part of the response if no catchFn is provided', async function () {
+      const err = new Error('Bad thing happened.');
+      tryFn = sinon.stub().throws(err);
+      const { response, error } = await tryCatch(tryFn);
+      expect(response).to.be.undefined;
+      expect(error).to.eql(err);
+    });
+
+    it('should pass the error through the catchFn if provided', async function () {
+      let newErr;
+      const err = new Error('Bad thing happened.');
+      tryFn = sinon.stub().throws(err);
+      const { response, error } = await tryCatch(tryFn, (e) => {
+        expect(e).to.eql(err);
+        newErr = new Error('Koolaid');
+        return newErr;
+      });
+      expect(response).to.be.undefined;
+      expect(error).to.eql(newErr);
+    });
+
+    it('should play nice with async catchFn', async function () {
+      const err = new Error('Bad thing happened.');
+      const newErr = new Error('Less bad thing happened.');
+      tryFn = sinon.stub().throws(err);
+      catchFn = sinon.stub().resolves(newErr);
+      const { response, error } = await tryCatch(tryFn, catchFn);
+      expect(response).to.be.undefined;
+      expect(error).to.eql(newErr);
     });
   });
 });

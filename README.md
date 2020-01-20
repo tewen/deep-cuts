@@ -185,6 +185,17 @@ Returns a boolean that specifies whether the string is parsable JSON.
 const str = JSON.stringify({red: 5, green: 6});
 
 isJsonString(str); // true
+```
+
+
+#### jsonStreamToObject(stream)
+
+Takes a stream object that contains stringified JSON data and parses it into an object (async).
+
+```JavaScript
+const obj = await jsonStreamToObject(fs.createReadStream('my-json-file.json'));
+
+// obj is just the exact, parsed json as an object
 ``` 
 
 
@@ -231,6 +242,24 @@ console.log(safeJsonParse("{\"message\": \"I will be safely parsed\"}")); // I w
 console.log(safeJsonParse("{\"bad_key: \"value\"}")); // null
 
 console.log(safeJsonParse(undefined)); // null
+```
+
+
+#### tryCatch(tryFn,[catchFn])
+
+Functional, async tryCatch wrapper that provides an object with a response and error for alternative control flow.
+
+```JavaScript
+async function trySomething() {...}
+async function catchSomething(e) {
+  // DO SOME PASS THROUGH WORK HERE, OPTIONAL
+  return e;
+}
+
+const { response, error } = tryCatch(trySomething, catchSomething);
+
+// response is the result of the trySomething function
+// error is the error if no catchFn, or the return value of the catchFn
 ```
 
 ### Contribution Guidelines

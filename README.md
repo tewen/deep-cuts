@@ -185,6 +185,17 @@ Returns a boolean that specifies whether the string is parsable JSON.
 const str = JSON.stringify({red: 5, green: 6});
 
 isJsonString(str); // true
+```
+
+
+#### jsonStreamToObject(stream)
+
+Takes a stream object that contains stringified JSON data and parses it into an object (async).
+
+```JavaScript
+const obj = await jsonStreamToObject(fs.createReadStream('my-json-file.json'));
+
+// obj is just the exact, parsed json as an object
 ``` 
 
 

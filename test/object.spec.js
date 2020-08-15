@@ -1,8 +1,100 @@
 const { expect } = require('chai');
 
-const { flattenObject } = require('../');
+const { isObject, isEmpty, merge, flattenObject } = require('../');
 
 describe('object', function () {
+  describe('isObject()', () => {
+    it('should return false for undefined', () => {
+      expect(isObject(undefined)).to.be.false;
+    });
+
+    it('should return false for null', () => {
+      expect(isObject(null)).to.be.false;
+    });
+
+    it('should return false for numbers', () => {
+      expect(isObject(55)).to.be.false;
+    });
+
+    it('should return false for string', () => {
+      expect(isObject('Red')).to.be.false;
+    });
+
+    it('should return false for a boolean', () => {
+      expect(isObject(true)).to.be.false;
+    });
+
+    it('should return false for NaN', () => {
+      expect(isObject(NaN)).to.be.false;
+    });
+
+    it('should return false for a function', () => {
+      expect(isObject(new Function())).to.be.false;
+    });
+
+    it('should return true for an object', () => {
+      expect(isObject({})).to.be.true;
+    });
+
+    it('should return true for an array', () => {
+      expect(isObject([])).to.be.true;
+    });
+  });
+
+  describe('isEmpty()', () => {
+    it('should return true for undefined', () => {
+      expect(isEmpty(undefined)).to.be.true;
+    });
+
+    it('should return true for null', () => {
+      expect(isEmpty(null)).to.be.true;
+    });
+
+    it('should return true for an empty string', () => {
+      expect(isEmpty('')).to.be.true;
+    });
+
+    it('should return true for an empty string with spaces', () => {
+      expect(isEmpty('     ')).to.be.true;
+    });
+
+    it('should return true for an empty object', () => {
+      expect(isEmpty({})).to.be.true;
+    });
+
+    it('should return true for an empty array', () => {
+      expect(isEmpty([])).to.be.true;
+    });
+
+    it('should return true for NaN', () => {
+      expect(isEmpty(NaN)).to.be.true;
+    });
+
+    it('should return false for a string with characters', () => {
+      expect(isEmpty('Red Team, Go')).to.be.false;
+    });
+
+    it('should return false for 0', () => {
+      expect(isEmpty(0)).to.be.false;
+    });
+
+    it('should return false for any number', () => {
+      expect(isEmpty(1897.2727)).to.be.false;
+    });
+
+    it('should return false for true', () => {
+      expect(isEmpty(true)).to.be.false;
+    });
+
+    it('should return false for false', () => {
+      expect(isEmpty(false)).to.be.false;
+    });
+
+    it('should return false for a function', () => {
+      expect(isEmpty(new Function())).to.be.false;
+    });
+  });
+
   describe('flattenObject()', function () {
     it('should return undefined if passed undefined', function () {
       expect(flattenObject(undefined)).to.be.undefined;
@@ -121,5 +213,211 @@ describe('object', function () {
         'degrees[1].professors[2].smooth': true
       });
     });
+  });
+
+  describe('merge()', function () {
+    it('should return an object if passed nothing', () => {
+      expect(merge()).to.eql({});
+    });
+
+    it('should return an object if passed undefined', () => {
+      expect(merge(undefined)).to.eql({});
+    });
+
+    it('should return an object if passed null', () => {
+      expect(merge(null)).to.eql({});
+    });
+
+    it('should return an object if passed empty objects', () => {
+      expect(merge({}, {}, {})).to.eql({});
+    });
+
+    it('should return an object if passed a set of empty objects, null, and undefined', () => {
+      expect(merge({}, null, {}, undefined, {})).to.eql({});
+    });
+
+    it('should never modify the original object', () => {
+      const originalObj = { id: 1 };
+      const newObj = merge(originalObj);
+      expect(newObj).to.eql(originalObj);
+      expect(newObj).not.to.equal(originalObj);
+    });
+
+    it('should do a shallow merge with overwrites', () => {
+      expect(merge({
+        id: 1,
+        color: 'red'
+      }, {
+        id: 2,
+        flavor: 'Strawberry'
+      }, {
+        id: 3
+      })).to.eql({
+        id: 3,
+        color: 'red',
+        flavor: 'Strawberry'
+      });
+    });
+
+    it('should not allow undefined to do any overwrites in a shallow merge', () => {
+      expect(merge({
+        id: 1,
+        color: 'red'
+      }, {
+        id: 2,
+        flavor: 'Strawberry',
+        color: undefined
+      }, {
+        id: 3,
+        flavor: undefined
+      })).to.eql({
+        id: 3,
+        color: 'red',
+        flavor: 'Strawberry'
+      });
+    });
+
+    it('should allow falsey values to overwrite in a shallow merge', () => {
+      expect(merge({
+        id: 1,
+        color: 'red'
+      }, {
+        id: 2,
+        flavor: 'Strawberry',
+        color: null
+      }, {
+        id: 3,
+        flavor: false
+      })).to.eql({
+        id: 3,
+        color: null,
+        flavor: false
+      });
+    });
+
+    it('should be able to do deep merges', () => {
+      const a = {
+        Red: '1',
+        Green: ['Lemmy', 'Cheddar', 'Iron Maiden'],
+        Blue: {
+          forty: {
+            goodTimes: 'Ronnie James'
+          },
+          fifty: {
+            id: 50
+          }
+        }
+      };
+      const b = {
+        Yellow: '2',
+        Green: ['Koolaid', 'Hawaiian Punch'],
+        Blue: {
+          forty: {
+            goodTimes: 'Peter Griffin'
+          },
+          sixty: {
+            id: 60
+          }
+        }
+      };
+      expect(merge(a, b)).to.eql({
+        Red: '1',
+        Yellow: '2',
+        Green: ['Koolaid', 'Hawaiian Punch'],
+        Blue: {
+          forty: {
+            goodTimes: 'Peter Griffin'
+          },
+          fifty: {
+            id: 50
+          },
+          sixty: {
+            id: 60
+          }
+        }
+      });
+    });
+
+    it('should not allow undefined to do any overwrites in a deep merge', () => {
+      const a = {
+        Red: '1',
+        Green: ['Lemmy', 'Cheddar', 'Iron Maiden'],
+        Blue: {
+          forty: {
+            goodTimes: 'Ronnie James'
+          },
+          fifty: {
+            id: 50
+          }
+        }
+      };
+      const b = {
+        Yellow: '2',
+        Green: undefined,
+        Blue: {
+          forty: {
+            goodTimes: 'Peter Griffin'
+          },
+          sixty: {
+            id: 60
+          }
+        }
+      };
+      expect(merge(a, b)).to.eql({
+        Red: '1',
+        Yellow: '2',
+        Green: ['Lemmy', 'Cheddar', 'Iron Maiden'],
+        Blue: {
+          forty: {
+            goodTimes: 'Peter Griffin'
+          },
+          fifty: {
+            id: 50
+          },
+          sixty: {
+            id: 60
+          }
+        }
+      });
+    });
+
+    it('should allow falsey values to overwrite in a deeo merge merge', () => {
+      const a = {
+        Red: '1',
+        Green: ['Lemmy', 'Cheddar', 'Iron Maiden'],
+        Blue: {
+          forty: {
+            goodTimes: 'Ronnie James'
+          },
+          fifty: {
+            id: 50
+          }
+        }
+      };
+      const b = {
+        Yellow: '2',
+        Green: null,
+        Blue: {
+          forty: false,
+          sixty: {
+            id: 60
+          }
+        }
+      };
+      expect(merge(a, b)).to.eql({
+        Red: '1',
+        Yellow: '2',
+        Green: null,
+        Blue: {
+          forty: false,
+          fifty: {
+            id: 50
+          },
+          sixty: {
+            id: 60
+          }
+        }
+      });
+    })
   });
 });

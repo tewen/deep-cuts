@@ -1,11 +1,12 @@
 ## Deep Cuts
 
-This project is a collection of otherwise uncategorized utility functions. Requires [Lodash](https://www.npmjs.com/package/lodash) as peer dependency, be warned.
+This project is a collection of otherwise uncategorized utility functions.
+
+#### Project No Longer Requires Lodash as a Peer Dependency!
 
 ### Installation
 
 ```BASH
-npm install --save lodash
 npm install --save deep-cuts
 ```
 

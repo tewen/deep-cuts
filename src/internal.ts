@@ -1,5 +1,12 @@
-function getValue(obj, keyPath, defaultValue) {
-  const split = keyPath.trim().replace(/\[|\]/g, '').split('.');
+export function getValue(
+  obj: Record<string, any>,
+  keyPath: string,
+  defaultValue: any
+): unknown {
+  const split = keyPath
+    .trim()
+    .replace(/\[|\]/g, '')
+    .split('.');
   const first = split[0];
   const tail = split.slice(1);
   if (obj) {
@@ -13,21 +20,23 @@ function getValue(obj, keyPath, defaultValue) {
   return defaultValue;
 }
 
-function setValue(obj, keyPath, value) {
-  const split = keyPath.trim().replace(/\[|\]/g, '').split('.');
+export function setValue(
+  obj: Record<string, any>,
+  keyPath: string,
+  value: any
+): Record<string, any> {
+  const split = keyPath
+    .trim()
+    .replace(/\[|\]/g, '')
+    .split('.');
   const first = split[0];
   const tail = split.slice(1);
   if (tail.length) {
-    const secondIsArrayIndex = /^\d+$/.test(tail[0])
+    const secondIsArrayIndex = /^\d+$/.test(tail[0]);
     const newObj = obj[first] || (secondIsArrayIndex ? [] : {});
     obj[first] = setValue(newObj, tail.join('.'), value);
   } else {
-    obj[first] = value
+    obj[first] = value;
   }
   return obj;
 }
-
-module.exports = {
-  getValue,
-  setValue
-};

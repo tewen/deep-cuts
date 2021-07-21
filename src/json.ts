@@ -1,6 +1,6 @@
-const { isObject } = require('./object');
+import { isObject } from './object';
 
-function isJsonString(str) {
+export function isJsonString(str: string): boolean {
   try {
     return isObject(JSON.parse(str));
   } catch (e) {
@@ -8,7 +8,7 @@ function isJsonString(str) {
   }
 }
 
-function safeJsonParse(obj) {
+export function safeJsonParse(obj: string): object | null {
   if (obj && typeof obj === 'string') {
     try {
       return JSON.parse(obj);
@@ -18,8 +18,3 @@ function safeJsonParse(obj) {
   }
   return null;
 }
-
-module.exports = {
-  isJsonString,
-  safeJsonParse
-};

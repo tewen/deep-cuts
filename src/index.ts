@@ -1,3 +1,4 @@
+export { tailRecursion } from './array';
 export { csvRowsToObjects, objectsToCsvRows } from './csv';
 export { acceptNoArguments, functionOrValue, tryCatch } from './function';
 export { isJsonString, safeJsonParse } from './json';

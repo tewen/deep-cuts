@@ -1,103 +1,298 @@
-# TSDX User Guide
+## Deep Cuts
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+This project is a collection of otherwise uncategorized utility functions.
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+#### Project No Longer Requires Lodash as a Peer Dependency!
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+### Installation
 
-## Commands
-
-TSDX scaffolds your new library inside `/src`.
-
-To run TSDX, use:
-
-```bash
-npm start # or yarn start
+```BASH
+npm install --save deep-cuts
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+### Getting Started
 
-To do a one-off build, use `npm run build` or `yarn build`.
+Just require the module, every method lives at the top level.
 
-To run tests, use `npm test` or `yarn test`.
+```JavaScript
+const { safeJsonParse } = require('deep-cuts');
 
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+console.log(safeJsonParse(JSON.stringify({message: 'I will be safely parsed'})));
 ```
 
-### Rollup
+### Methods
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+#### acceptNoArguments(fn, [args])
 
-### TypeScript
+Creates a function that accepts no arguments at call time. Behaves similar to lodash [partial](https://lodash.com/docs/4.17.11#partial) method, arguments can be provided at create time. None can be passed at call time.
 
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+```JavaScript
+function myFunction(...args) {
+  console.log(`I was called with ${args.length} arguments.`);
 }
+
+acceptNoArguments(myFunction)(0, 1, 2); // I was called with 0 arguments.
+
+acceptNoArguments(myFunction, 3, 4)(0, 1, 2); // I was called with 2 arguments.
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
 
-## Module Formats
+#### csvRowsToObjects(rows, [options={queryStringsToObjects: false, jsonStringsToObjects: false, parseFloats: false, trimValues: false, listDelimiter: ','}])
 
-CJS, ESModules, and UMD module formats are supported.
+Takes an array of arrays as input and maps the headers out to objects in a consistent manner. Supports nesting with dot properties and array value types.
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+```JavaScript
+const rows = [
+ ['red', 'green[]', 'blue.forty.goodTimes'],
+ ['1', 'Iron Maiden', 'Ronnie James'],
+ ['2', 'Koolaid,Hawaiian Punch', 'Peter Griffin']
+];
 
-## Named Exports
+csvRowsToObjects(rows);
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+/** Output
+[
+    {
+      red: '1',
+      green: ['Iron Maiden'],
+      blue: {
+        forty: {
+          goodTimes: 'Ronnie James'
+        }
+      }
+    },
+    {
+      red: '2',
+      green: ['Koolaid', 'Hawaiian Punch'],
+      blue: {
+        forty: {
+          goodTimes: 'Peter Griffin'
+        }
+      }
+    }
+  ]
+**/
+```
 
-## Including Styles
+##### Options
+* **queryStringsToObjects**: Encodes query strings in array cells to objects.
+* **jsonStringsToObjects**: Supports JSON objects in array cells.
+* **parseFloats**: Parses any number found into a float.
+* **trimValues**: Trims extra whitespace in values.
+* **listDelimiter**: Default is comma, can be any character used for array delimiting.
 
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
 
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
+#### objectsToCsvRows(objects, [options={queryStringsToObjects: false, jsonStringsToObjects: false, listDelimiter: ','}])
 
-## Publishing to NPM
+This method is the inverse of the above method. This will take the nested objects and get them back to CSV rows format.
 
-We recommend using [np](https://github.com/sindresorhus/np).
+```JavaScript
+const objects = [
+{
+  red: '1',
+  green: ['Iron Maiden'],
+  blue: {
+    forty: {
+      goodTimes: 'Ronnie James'
+    }
+  }
+},
+{
+  red: '2',
+  green: ['Koolaid', 'Hawaiian Punch'],
+  blue: {
+    forty: {
+      goodTimes: 'Peter Griffin'
+    }
+  }
+}
+];
+
+objectsToCsvRows(objects);
+
+/** Output
+[
+ ['red', 'green[]', 'blue.forty.goodTimes'],
+ ['1', 'Iron Maiden', 'Ronnie James'],
+ ['2', 'Koolaid,Hawaiian Punch', 'Peter Griffin']
+]
+**/
+```
+
+##### Options
+* **queryStringsToObjects**: Encodes query strings in array cells to objects.
+* **jsonStringsToObjects**: Supports JSON objects in array cells.
+* **listDelimiter**: Default is comma, can be any character used for array delimiting.
+
+
+#### escapeForRegExp(str)
+
+Escapes any special characters so the strings can safely be placed in a RegExp constructor.
+
+```JavaScript
+console.log(escapeForRegExp('function test() { return 5 * 5; }')); // function test\(\) \{ return 5 \* 5; \}
+```
+
+
+#### flattenObject(obj)
+
+Flattens an object so that every property is available at the top-level via the same key path as a property string. Compatible with lodash [_.get](https://lodash.com/docs/4.17.11#get) / [_.set](https://lodash.com/docs/4.17.11#set).
+
+```JavaScript
+const obj = {
+  name: {
+    first: 'Lemmy',
+    last: 'Kilmister'
+  },
+  favoriteColors: [
+    { name: 'Black' },
+    { name: 'Red' }
+  ]
+};
+
+flattenObject(obj);
+
+/** Output
+
+{
+  'name.first': 'Lemmy',
+  'name.last': 'Kilmister',
+  'favoriteColors[0].name': 'Black',
+  'favoriteColors[1].name': 'Red'
+}
+
+**/
+```
+
+
+#### functionOrValue(fnOrValue, [...args])
+
+Returns either the value given or the return value of the function passed in. Can be called with optional arguments (...args).
+Also cascades downward if functions return functions.
+
+```JavaScript
+console.log(functionOrValue(true)); // true
+console.log(functionOrValue(() => false)); // false
+console.log(functionOrValue((a, b, c) => a + b + c, 5, 6, 7)); // 18
+console.log(functionOrValue((a, b, c) => () => a + c, 5, 6, 7)); // 12
+```
+
+
+#### isJsonString(str)
+
+Returns a boolean that specifies whether the string is parsable JSON.
+
+```JavaScript
+const str = JSON.stringify({red: 5, green: 6});
+
+isJsonString(str); // true
+```
+
+
+#### jsonStreamToObject(stream)
+
+Takes a stream object that contains stringified JSON data and parses it into an object (async).
+
+```JavaScript
+const obj = await jsonStreamToObject(fs.createReadStream('my-json-file.json'));
+
+// obj is just the exact, parsed json as an object
+``` 
+
+
+#### stringToBoolean(str)
+
+Usually used for url parameters, converts null, undefined, 0, false, or '' to false even if they are strings. All other values are true.
+
+```JavaScript
+console.log(stringToBoolean('0')); // false
+
+console.log(stringToBoolean('null')); // false
+
+console.log(stringToBoolean('undefined')); // false
+
+console.log(stringToBoolean('false')); // false
+
+console.log(stringToBoolean('')); // false
+
+console.log(stringToBoolean(0)); // false
+
+console.log(stringToBoolean(null)); // false
+
+console.log(stringToBoolean(undefined)); // false
+
+console.log(stringToBoolean(false)); // false
+
+console.log(stringToBoolean()); // false
+
+console.log(stringToBoolean(1)); // true
+
+console.log(stringToBoolean({})); // true
+
+console.log(stringToBoolean(true)); // true
+```
+
+
+#### safeJsonParse(strObj)
+
+Wrapper around JSON.parse that will not throw errors for nil or poorly formatted strings. Returns null in any invalid case.
+
+```JavaScript
+console.log(safeJsonParse("{\"message\": \"I will be safely parsed\"}")); // I will be safely parsed
+
+console.log(safeJsonParse("{\"bad_key: \"value\"}")); // null
+
+console.log(safeJsonParse(undefined)); // null
+```
+
+
+#### tailRecursion(ar, fn)
+
+Asynchronous operations through an array, in sequence.
+
+```JavaScript
+const objectsToProcess = [...];
+const processed = await tailRecursion(objectsToProcess, async (item:UniqueType) => {
+  await doSomething();
+  return item.uniqueMethod();
+});
+
+```
+
+
+#### tryCatch(tryFn,[catchFn])
+
+Functional, async tryCatch wrapper that provides an object with a response and error for alternative control flow.
+
+```JavaScript
+async function trySomething() {...}
+async function catchSomething(e) {
+  // DO SOME PASS THROUGH WORK HERE, OPTIONAL
+  return e;
+}
+
+const { response, error } = tryCatch(trySomething, catchSomething);
+
+// response is the result of the trySomething function
+// error is the error if no catchFn, or the return value of the catchFn
+```
+
+### Contribution Guidelines
+
+Fork the respository and install all the dependencies:
+
+```BASH
+npm install
+```
+
+Make sure to run the unit tests (and lint) before committing. Obviously, add to the tests as you make changes:
+
+```BASH
+npm run test
+```
+
+For watch:
+
+```BASH
+npm run test:watch
+```

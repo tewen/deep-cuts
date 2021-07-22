@@ -1,42 +1,70 @@
 {
   "name": "deep-cuts",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "description": "Useful utilities and rare b-sides.",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha \"test/**/*.spec.js\" && npm run lint",
-    "test:watch": "mocha --watch \"test/**/*.spec.js\"",
-    "lint": "eslint lib test"
+  "author": "Trevor Ewen",
+  "license": "MIT",
+  "module": "dist/deep-cuts.esm.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
   },
-  "homepage": "https://github.com/tewen/deep-cuts.git",
+  "homepage": "https://github.com/tewen/deep-cuts#readme",
+  "bugs": {
+    "url": "https://github.com/tewen/deep-cuts/issues"
+  },
   "keywords": [
     "Util",
     "Useful",
     "Helpers"
   ],
-  "author": "Trevor Ewen",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/tewen/deep-cuts.git"
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "test-watch": "tsdx test --watch",
+    "lint": "tsdx lint",
+    "lint-fix": "tsdx lint --fix",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
   },
-  "engines": {
-    "node": ">=8.6.0",
-    "npm": ">=4.1.2"
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "size-limit": [
+    {
+      "path": "dist/deep-cuts.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/deep-cuts.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "dependencies": {
+    "qs": "^6.5.2"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^5.15.0",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-utils": "^1.4.1",
-    "js-yaml": "^3.13.1",
-    "mixin-deep": "^1.3.2",
-    "mocha": "^6.2.0",
-    "set-value": "^2.0.1",
-    "sinon": "^7.2.4",
-    "sinon-chai": "^3.3.0"
-  },
-  "dependencies": {
-    "qs": "^6.8.0"
+    "@size-limit/preset-small-lib": "^5.0.1",
+    "@types/jest": "^25.2.3",
+    "husky": "^7.0.1",
+    "size-limit": "^5.0.1",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
   }
 }

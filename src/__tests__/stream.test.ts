@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const { jsonStreamToObject } = require('../');
+import fs from 'fs';
+import path from 'path';
+import { jsonStreamToObject } from '../';
 
 describe('stream', () => {
   describe('jsonStreamToObject()', () => {

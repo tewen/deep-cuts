@@ -1,4 +1,4 @@
-const { isJsonString, safeJsonParse } = require('../');
+import { isJsonString, safeJsonParse } from '../';
 
 describe('json', () => {
   describe('isJsonString()', () => {

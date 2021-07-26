@@ -1,7 +1,7 @@
 export function getValue(
   obj: Record<string, any>,
   keyPath: string,
-  defaultValue: any
+  defaultValue?: any
 ): unknown {
   const split = keyPath
     .trim()

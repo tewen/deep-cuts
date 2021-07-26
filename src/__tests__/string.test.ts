@@ -1,4 +1,4 @@
-const { stringToBoolean, escapeForRegExp } = require('../');
+import { stringToBoolean, escapeForRegExp } from '../';
 
 describe('string', () => {
   describe('stringToBoolean()', () => {
@@ -57,10 +57,12 @@ describe('string', () => {
 
   describe('escapeForRegExp()', () => {
     it('should return undefined if passed undefined', () => {
+      // @ts-ignore
       expect(escapeForRegExp(undefined)).toBeUndefined();
     });
 
     it('should return null if passed null', () => {
+      // @ts-ignore
       expect(escapeForRegExp(null)).toBeNull();
     });
 

@@ -1,6 +1,6 @@
 import { isObject } from './object';
 
-export function isJsonString(str: string): boolean {
+export function isJsonString(str: any): boolean {
   try {
     return isObject(JSON.parse(str));
   } catch (e) {
@@ -8,7 +8,7 @@ export function isJsonString(str: string): boolean {
   }
 }
 
-export function safeJsonParse(obj: string): object | null {
+export function safeJsonParse(obj: any): object | null {
   if (obj && typeof obj === 'string') {
     try {
       return JSON.parse(obj);

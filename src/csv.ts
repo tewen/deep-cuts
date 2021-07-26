@@ -1,7 +1,7 @@
-const qs = require('qs');
-const { safeJsonParse } = require('./json');
-const { isObject, isEmpty, merge } = require('./object');
-const { getValue, setValue } = require('./internal');
+import qs from 'qs';
+import { isObject, isEmpty, merge } from './object';
+import { safeJsonParse } from './json';
+import { getValue, setValue } from './internal';
 
 type ReduceCallback = <T extends object>(
   acc: T,
@@ -147,6 +147,7 @@ function flattenToCsvFormat(
   if (isObject(obj)) {
     return reduceObjectOrArray(
       obj,
+      // @ts-ignore
       (acc: Record<string, any>, v, k) => {
         const isArray = Array.isArray(v);
         const key = chooseKey({

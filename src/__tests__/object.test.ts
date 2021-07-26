@@ -1,4 +1,4 @@
-const { isObject, isEmpty, merge, flattenObject } = require('../');
+import { isObject, isEmpty, merge, flattenObject } from '../';
 
 describe('object', () => {
   describe('isObject()', () => {
@@ -95,18 +95,22 @@ describe('object', () => {
 
   describe('flattenObject()', () => {
     it('should return undefined if passed undefined', () => {
+      // @ts-ignore
       expect(flattenObject(undefined)).toBeUndefined();
     });
 
     it('should return null if passed null', () => {
+      // @ts-ignore
       expect(flattenObject(null)).toBeNull();
     });
 
     it('should return a number if passed a number', () => {
+      // @ts-ignore
       expect(flattenObject(55.5)).toEqual(55.5);
     });
 
     it('should return a string if passed a string', () => {
+      // @ts-ignore
       expect(flattenObject('Koolaid City')).toEqual('Koolaid City');
     });
 
@@ -227,10 +231,12 @@ describe('object', () => {
     });
 
     it('should return an object if passed undefined', () => {
+      // @ts-ignore
       expect(merge(undefined)).toEqual({});
     });
 
     it('should return an object if passed null', () => {
+      // @ts-ignore
       expect(merge(null)).toEqual({});
     });
 
@@ -239,6 +245,7 @@ describe('object', () => {
     });
 
     it('should return an object if passed a set of empty objects, null, and undefined', () => {
+      // @ts-ignore
       expect(merge({}, null, {}, undefined, {})).toEqual({});
     });
 

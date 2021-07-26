@@ -1,6 +1,5 @@
 import Mock = jest.Mock;
-
-const { acceptNoArguments, functionOrValue, tryCatch } = require('../');
+import { acceptNoArguments, functionOrValue, tryCatch } from '../';
 
 describe('function', () => {
   describe('acceptNoArguments()', () => {

@@ -1,8 +1,9 @@
-const { getValue, setValue } = require('../internal');
+import { getValue, setValue } from '../internal';
 
 describe('internal', () => {
   describe('getValue()', () => {
     it('should return the default value if passed a nil primitive', () => {
+      // @ts-ignore
       expect(getValue(null, 'name', 'Steve')).toEqual('Steve');
     });
 

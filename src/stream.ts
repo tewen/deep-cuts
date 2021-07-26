@@ -2,7 +2,7 @@
  * @deprecated For stream functions, please switch to https://www.npmjs.com/package/tranquil-stream
  */
 export async function jsonStreamToObject(
-  stream: NodeJS.ReadWriteStream
+  stream: NodeJS.ReadWriteStream | NodeJS.ReadableStream
 ): Promise<Record<string, any>> {
   return new Promise((resolve, reject) => {
     let response = '';

@@ -13,11 +13,11 @@ export function functionOrValue(fnOrValue: any, ...args: any[]): unknown {
 
 export async function tryCatch(
   tryFn: Function,
-  catchFn: Function
+  catchFn?: Function
 ): Promise<{ response?: unknown; error?: unknown }> {
   try {
     return { response: await tryFn() };
   } catch (e) {
-    return { error: isFunction(catchFn) ? await catchFn(e) : e };
+    return { error: catchFn && isFunction(catchFn) ? await catchFn(e) : e };
   }
 }

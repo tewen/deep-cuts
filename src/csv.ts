@@ -50,7 +50,7 @@ const flattenDeep = (ar: any[]): any[] =>
     ? (ar || []).reduce((acc, v) => acc.concat(flattenDeep(v)), [])
     : ar;
 
-const unique = (ar: any[]): any[] => [...new Set(ar)];
+const unique = (ar: any[]): any[] => Array.from(new Set(ar));
 
 export function csvRowsToObjects(
   rows: any[][],

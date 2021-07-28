@@ -19,7 +19,7 @@ function determineTransform(
   { parseFloats, trimValues }: { parseFloats?: boolean; trimValues?: boolean }
 ): unknown {
   if (trimValues) {
-    return determineTransform(value.trim(), {
+    return determineTransform((value || '').trim(), {
       parseFloats,
       trimValues: false,
     });

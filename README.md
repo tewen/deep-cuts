@@ -200,6 +200,28 @@ const obj = await jsonStreamToObject(fs.createReadStream('my-json-file.json'));
 ``` 
 
 
+#### parseFloatOrUndefined(value)
+
+Ensures that the value will be parsed as represented or returns undefined. Trys to get around the weird behavior of parseFloat by itself.
+
+```JavaScript
+const number = parseFloatOrUndefined('65.895');
+
+console.log(number) // 65.895 as number
+```
+
+
+#### parseIntegerOrUndefined(value)
+
+Ensures that the value will be parsed as represented or returns undefined. Trys to get around the weird behavior of parseInt by itself.
+
+```JavaScript
+const number = parseIntegerOrUndefined('65.895');
+
+console.log(number) // 65 as number
+```
+
+
 #### stringToBoolean(str)
 
 Usually used for url parameters, converts null, undefined, 0, false, or '' to false even if they are strings. All other values are true.

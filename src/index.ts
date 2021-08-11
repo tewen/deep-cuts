@@ -2,6 +2,7 @@ export { tailRecursion } from './array';
 export { csvRowsToObjects, objectsToCsvRows } from './csv';
 export { acceptNoArguments, functionOrValue, tryCatch } from './function';
 export { isJsonString, safeJsonParse } from './json';
+export { parseFloatOrUndefined, parseIntegerOrUndefined } from './number';
 export { isEmpty, isObject, merge, flattenObject } from './object';
 export { jsonStreamToObject } from './stream';
 export { escapeForRegExp, stringToBoolean } from './string';

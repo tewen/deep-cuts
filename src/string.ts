@@ -16,3 +16,18 @@ export function escapeForRegExp(str: string): string {
     : str;
   /* eslint-enable no-useless-escape */
 }
+
+export function cleanSpecialCharacters(
+  str: string,
+  replacement: string = ''
+): string {
+  return String(str || '')
+    .split('')
+    .map(char => {
+      if (char.charCodeAt(0) > 127) {
+        return replacement;
+      }
+      return char;
+    })
+    .join('');
+}

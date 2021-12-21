@@ -1,5 +1,4 @@
-import { stringToBoolean, escapeForRegExp } from '../';
-import { cleanSpecialCharacters } from '../string';
+import { cleanSpecialCharacters, stringToBoolean, escapeForRegExp } from '../';
 
 describe('string', () => {
   describe('stringToBoolean()', () => {

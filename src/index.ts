@@ -5,4 +5,8 @@ export { isJsonString, safeJsonParse } from './json';
 export { parseFloatOrUndefined, parseIntegerOrUndefined } from './number';
 export { isEmpty, isObject, merge, flattenObject } from './object';
 export { jsonStreamToObject } from './stream';
-export { escapeForRegExp, stringToBoolean } from './string';
+export {
+  cleanSpecialCharacters,
+  escapeForRegExp,
+  stringToBoolean,
+} from './string';

@@ -48,6 +48,7 @@ describe('stream', () => {
           fs.createReadStream(path.join(__dirname, 'fixtures/bad.json'))
         );
       } catch (e) {
+        // @ts-ignore
         expect(e.message).toEqual(
           'Stream did not resolve to a JSON object, you may need to process it another way.'
         );

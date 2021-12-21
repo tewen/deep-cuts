@@ -4,14 +4,9 @@ export async function tailRecursion<T>(
   payload: any[] = []
 ): Promise<any[]> {
   if (collection?.length) {
-    const first: T = collection[0];
-    if (first) {
-      const response: any = await operation(first);
-      return tailRecursion(
-        collection.slice(1),
-        operation,
-        payload.concat(response)
-      );
+    for (const item of collection) {
+      const response: any = await operation(item);
+      payload.push(response);
     }
   }
   return payload;

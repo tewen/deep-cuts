@@ -1,6 +1,6 @@
 {
   "name": "deep-cuts",
-  "version": "2.2.0",
+  "version": "2.3.1",
   "description": "Useful utilities and rare b-sides.",
   "author": "Trevor Ewen",
   "license": "MIT",
@@ -59,9 +59,10 @@
     "qs": "^6.5.2"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^5.0.1",
+    "@size-limit/preset-small-lib": "^7.0.4",
     "@types/jest": "^25.2.3",
     "@types/qs": "^6.9.7",
+    "axios": "^0.24.0",
     "data-mining-tools": "^1.1.1",
     "husky": "^7.0.1",
     "size-limit": "^5.0.1",

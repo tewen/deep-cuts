@@ -1,4 +1,5 @@
 import { stringToBoolean, escapeForRegExp } from '../';
+import { cleanSpecialCharacters } from '../string';
 
 describe('string', () => {
   describe('stringToBoolean()', () => {
@@ -144,6 +145,80 @@ describe('string', () => {
       expect(escapeForRegExp('function test() { return 5 * 5; }')).toEqual(
         'function test\\(\\) \\{ return 5 \\* 5; \\}'
       );
+    });
+  });
+
+  describe('cleanSpecialCharacters()', () => {
+    it('should return an empty string if passed undefined', () => {
+      // @ts-ignore
+      expect(cleanSpecialCharacters(undefined)).toEqual('');
+    });
+
+    it('should return an empty string if passed null', () => {
+      // @ts-ignore
+      expect(cleanSpecialCharacters(null)).toEqual('');
+    });
+
+    it('should return an empty string if passed an empty string', () => {
+      expect(cleanSpecialCharacters('')).toEqual('');
+    });
+
+    it('should return a string with no special characters as-is', () => {
+      expect(cleanSpecialCharacters('Koolaid, Punch, Results.xlsx')).toEqual(
+        'Koolaid, Punch, Results.xlsx'
+      );
+    });
+
+    it('should return a string with no special characters as-is, even if all spaces', () => {
+      expect(cleanSpecialCharacters('    ')).toEqual('    ');
+    });
+
+    it('should play nice with numbers', () => {
+      // @ts-ignore
+      expect(cleanSpecialCharacters(25.624)).toEqual('25.624');
+    });
+
+    it('should play nice with numbers in a string', () => {
+      expect(cleanSpecialCharacters('56 Signs.pdf')).toEqual('56 Signs.pdf');
+    });
+
+    it('should play nice with punctuation', () => {
+      expect(
+        cleanSpecialCharacters('Reginald. Sr. Officer of the war $5.00')
+      ).toEqual('Reginald. Sr. Officer of the war $5.00');
+    });
+
+    it('should remove all characters with unicode code above 127', () => {
+      expect(
+        cleanSpecialCharacters(
+          `Hello, ${String.fromCharCode(890)} my name is ${String.fromCharCode(
+            129
+          )}hill`
+        )
+      ).toEqual('Hello,  my name is hill');
+    });
+
+    it('should be able to specify a replacement for unicode characters above 127', () => {
+      expect(
+        cleanSpecialCharacters(
+          `Hello, ${String.fromCharCode(1200)} my name is ${String.fromCharCode(
+            135
+          )}hill`,
+          'X'
+        )
+      ).toEqual('Hello, X my name is Xhill');
+    });
+
+    it('should play nice with characters right at the edge', () => {
+      expect(
+        cleanSpecialCharacters(
+          [
+            String.fromCharCode(50),
+            String.fromCharCode(60),
+            String.fromCharCode(126),
+          ].join('')
+        )
+      ).toEqual('2<~');
     });
   });
 });

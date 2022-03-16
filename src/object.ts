@@ -8,6 +8,8 @@ const definedValues = (obj: Record<string, any>): Record<string, any> =>
       }, {} as Record<string, any>)
     : {};
 
+export const isNil = (val: any): boolean => val === undefined || val === null;
+
 export const isObject = (val: any): boolean =>
   val !== null && typeof val === 'object';
 

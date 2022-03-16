@@ -1,6 +1,52 @@
-import { isObject, isEmpty, merge, flattenObject } from '../';
+import { isObject, isEmpty, merge, flattenObject, isNil } from '../';
 
 describe('object', () => {
+  describe('isNil()', () => {
+    it('should return true for undefined', () => {
+      expect(isNil(undefined)).toBe(true);
+    });
+
+    it('should return true for null', () => {
+      expect(isNil(null)).toBe(true);
+    });
+
+    it('should return false for 0', () => {
+      expect(isNil(0)).toBe(false);
+    });
+
+    it('should return false for false', () => {
+      expect(isNil(false)).toBe(false);
+    });
+
+    it('should return false for an empty string', () => {
+      expect(isNil('')).toBe(false);
+    });
+
+    it('should return false for NaN', () => {
+      expect(isNil(NaN)).toBe(false);
+    });
+
+    it('should return false for an empty array', () => {
+      expect(isNil([])).toBe(false);
+    });
+
+    it('should return false for true', () => {
+      expect(isNil(true)).toBe(false);
+    });
+
+    it('should return false for an empty object', () => {
+      expect(isNil({})).toBe(false);
+    });
+
+    it('should return false for a float', () => {
+      expect(isNil(25.624)).toBe(false);
+    });
+
+    it('should return false for an actual string value', () => {
+      expect(isNil('Actual string value.')).toBe(false);
+    });
+  });
+
   describe('isObject()', () => {
     it('should return false for undefined', () => {
       expect(isObject(undefined)).toBe(false);

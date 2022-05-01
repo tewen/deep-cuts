@@ -1,4 +1,5 @@
 import { isObject, isEmpty, merge, flattenObject, isNil } from '../';
+import { keyValuePairs } from '../object';
 
 describe('object', () => {
   describe('isNil()', () => {
@@ -495,6 +496,141 @@ describe('object', () => {
           },
         },
       });
+    });
+  });
+
+  describe('keyValuePairs()', () => {
+    const alphabeticKeyComparator = (a: any[], b: any[]) => {
+      const aKey = a[0];
+      const bKey = b[0];
+      return aKey.localeCompare(bKey);
+    };
+
+    it('should return undefined if passed undefined', () => {
+      // @ts-ignore
+      expect(keyValuePairs(undefined)).toBeUndefined();
+    });
+
+    it('should return null if passed null', () => {
+      // @ts-ignore
+      expect(keyValuePairs(null)).toBeNull();
+    });
+
+    it('should return an empty array if passed an empty object', () => {
+      expect(keyValuePairs({})).toEqual([]);
+    });
+
+    it('should return an empty array if passed an empty array', () => {
+      expect(keyValuePairs([])).toEqual([]);
+    });
+
+    it('should return an array of primitives if passed an array of primitives', () => {
+      expect(keyValuePairs([5, true, 'Corn', 6, undefined])).toEqual([
+        5,
+        true,
+        'Corn',
+        6,
+        undefined,
+      ]);
+    });
+
+    it('should be able to sort an array of primitives if passed', () => {
+      expect(
+        // @ts-ignore
+        keyValuePairs(['mice', 'ant', 'butler'], (a: string, b: string) =>
+          a.localeCompare(b)
+        )
+      ).toEqual(['ant', 'butler', 'mice']);
+    });
+
+    it('should make a flat object into key value pairs', () => {
+      expect(keyValuePairs({ red: 55, green: false, blue: 89 })).toEqual([
+        ['red', 55],
+        ['green', false],
+        ['blue', 89],
+      ]);
+    });
+
+    it('should be able to sort the flat object based on the comparator logic', () => {
+      expect(
+        keyValuePairs(
+          { red: 55, green: false, blue: 89 },
+          alphabeticKeyComparator
+        )
+      ).toEqual([
+        ['blue', 89],
+        ['green', false],
+        ['red', 55],
+      ]);
+    });
+
+    it('should make a deep object into key value pairs', () => {
+      expect(
+        keyValuePairs({
+          red: 55,
+          green: { purple: 77, orange: { brown: 'Florida' } },
+          blue: 89,
+        })
+      ).toEqual([
+        ['red', 55],
+        [
+          'green',
+          [
+            ['purple', 77],
+            ['orange', [['brown', 'Florida']]],
+          ],
+        ],
+        ['blue', 89],
+      ]);
+    });
+
+    it('should be able to sort a deep object based on the comparator logic', () => {
+      expect(
+        keyValuePairs(
+          {
+            red: 55,
+            green: { purple: 77, orange: { brown: 'Florida' } },
+            blue: 89,
+          },
+          alphabeticKeyComparator
+        )
+      ).toEqual([
+        ['blue', 89],
+        [
+          'green',
+          [
+            ['orange', [['brown', 'Florida']]],
+            ['purple', 77],
+          ],
+        ],
+        ['red', 55],
+      ]);
+    });
+
+    it('should play nice with an array of objects', () => {
+      expect(
+        keyValuePairs([
+          { red: 55, green: false, blue: 89 },
+          { red: true, green: 'Kentucky', blue: 50 },
+          { red: 'Illinois', green: 22, blue: null },
+        ])
+      ).toEqual([
+        [
+          ['red', 55],
+          ['green', false],
+          ['blue', 89],
+        ],
+        [
+          ['red', true],
+          ['green', 'Kentucky'],
+          ['blue', 50],
+        ],
+        [
+          ['red', 'Illinois'],
+          ['green', 22],
+          ['blue', null],
+        ],
+      ]);
     });
   });
 });

@@ -91,3 +91,26 @@ function recursiveFlattenObject(
 
 export const flattenObject = (obj: Record<string, any>): Record<string, any> =>
   recursiveFlattenObject(obj);
+
+type SortIndicator = 1 | -1 | 0;
+
+export const keyValuePairs = (
+  obj: Record<string, any> | Record<string, any>[],
+  comparator?: (a: any, b: any) => SortIndicator
+): any[][] | any[] => {
+  if (obj) {
+    if (Array.isArray(obj)) {
+      const ar = obj.map(sub =>
+        isObject(sub) ? keyValuePairs(sub, comparator) : sub
+      );
+      return typeof comparator === 'function' ? ar.sort(comparator) : ar;
+    }
+    const pairs = Object.keys(obj).map(key => {
+      const value = obj[key];
+      return [key, isObject(value) ? keyValuePairs(value, comparator) : value];
+    });
+
+    return typeof comparator === 'function' ? pairs.sort(comparator) : pairs;
+  }
+  return obj;
+};

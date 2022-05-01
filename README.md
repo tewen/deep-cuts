@@ -200,6 +200,35 @@ const obj = await jsonStreamToObject(fs.createReadStream('my-json-file.json'));
 ``` 
 
 
+#### keyValuePairs(obj, [comparator])
+
+Takes a JavaScript object and turns it into key value array pairs. Can sort with an optional comparator.
+
+```JavaScript
+const obj = {
+  name: {
+    first: 'Lemmy',
+    last: 'Kilmister'
+  },
+  favoriteColors: [
+    { name: 'Black' },
+    { name: 'Red' }
+  ]
+};
+
+keyValuePairs(obj);
+
+/** Output
+
+[
+ ['name', [['first', 'Lemmy'], ['last', 'Kilmister']]],
+ ['favoriteColors', [['name', 'Black'], ['name', 'Red']]]
+]
+
+ **/
+```
+
+
 #### parseFloatOrUndefined(value)
 
 Ensures that the value will be parsed as represented or returns undefined. Trys to get around the weird behavior of parseFloat by itself.

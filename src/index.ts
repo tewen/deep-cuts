@@ -15,5 +15,6 @@ export { jsonStreamToObject } from './stream';
 export {
   cleanSpecialCharacters,
   escapeForRegExp,
+  ifNotNilString,
   stringToBoolean,
 } from './string';

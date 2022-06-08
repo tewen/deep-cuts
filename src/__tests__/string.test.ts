@@ -1,4 +1,9 @@
-import { cleanSpecialCharacters, stringToBoolean, escapeForRegExp } from '../';
+import {
+  cleanSpecialCharacters,
+  ifNotNilString,
+  stringToBoolean,
+  escapeForRegExp,
+} from '../';
 
 describe('string', () => {
   describe('stringToBoolean()', () => {
@@ -218,6 +223,66 @@ describe('string', () => {
           ].join('')
         )
       ).toEqual('2<~');
+    });
+  });
+
+  describe('ifNotNilString()', () => {
+    it('should return null if passed undefined', () => {
+      expect(ifNotNilString(undefined)).toBeNull();
+    });
+
+    it('should return null if passed null', () => {
+      expect(ifNotNilString(null)).toBeNull();
+    });
+
+    it('should return null if passed NaN', () => {
+      expect(ifNotNilString(NaN)).toBeNull();
+    });
+
+    it("should return null if passed 'undefined'", () => {
+      expect(ifNotNilString('undefined')).toBeNull();
+    });
+
+    it("should return null if passed 'null'", () => {
+      expect(ifNotNilString('null')).toBeNull();
+    });
+
+    it("should return null if passed 'NaN'", () => {
+      expect(ifNotNilString('NaN')).toBeNull();
+    });
+
+    it('should return a blank string if passed a blank string', () => {
+      expect(ifNotNilString('')).toBe('');
+    });
+
+    it('should return the value if passed a number', () => {
+      expect(ifNotNilString(501)).toBe(501);
+    });
+
+    it('should return 0 if passed 0', () => {
+      expect(ifNotNilString(0)).toBe(0);
+    });
+
+    it('should return a string if passed a string', () => {
+      expect(ifNotNilString('Ângelo')).toBe('Ângelo');
+    });
+
+    it('should return false if passed false', () => {
+      expect(ifNotNilString(false)).toBe(false);
+    });
+
+    it('should return true if passed true', () => {
+      expect(ifNotNilString(true)).toBe(true);
+    });
+
+    it('should return an empty object if passed an empty object', () => {
+      const obj = {};
+      expect(ifNotNilString(obj)).toBe(obj);
+    });
+
+    it('should return an empty array if passed one', () => {
+      const ar: any[] = [];
+      expect(ifNotNilString(ar)).toBe(ar);
     });
   });
 });

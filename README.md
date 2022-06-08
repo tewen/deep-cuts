@@ -177,6 +177,21 @@ console.log(functionOrValue((a, b, c) => a + b + c, 5, 6, 7)); // 18
 console.log(functionOrValue((a, b, c) => () => a + c, 5, 6, 7)); // 12
 ```
 
+#### ifNotNilString(val)
+
+Returns null if the string value of the argument is 'undefined', 'null', or 'NaN'.
+
+```JavaScript
+console.log(ifNotNilString(undefined)); // null
+console.log(ifNotNilString("undefined")); // null
+console.log(ifNotNilString(null)); // null
+console.log(ifNotNilString("null")); // null
+console.log(ifNotNilString(NaN)); // null
+console.log(ifNotNilString("NaN")); // null
+console.log(ifNotNilString(50)); // 50
+console.log(ifNotNilString("Koolaid")); // "Koolaid"
+```
+
 
 #### isJsonString(str)
 

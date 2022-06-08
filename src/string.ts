@@ -31,3 +31,14 @@ export function cleanSpecialCharacters(
     })
     .join('');
 }
+
+export function ifNotNilString(value: any) {
+  if (
+    String(value) === 'undefined' ||
+    String(value) === 'null' ||
+    String(value) === 'NaN'
+  ) {
+    return null;
+  }
+  return value;
+}

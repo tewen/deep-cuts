@@ -1,4 +1,8 @@
-import { parseFloatOrUndefined, parseIntegerOrUndefined } from '../';
+import {
+  parseFloatOrUndefined,
+  parseIntegerOrUndefined,
+  currencyToFloat,
+} from '../';
 
 describe('number', () => {
   describe('parseFloatOrUndefined()', () => {
@@ -75,6 +79,51 @@ describe('number', () => {
 
     it('should return a parsed integer if passed a string that is a valid integer representation', () => {
       expect(parseIntegerOrUndefined('32500')).toBe(32500);
+    });
+  });
+
+  describe('currencyToFloat()', () => {
+    it('should return undefined if passed undefined', () => {
+      // @ts-ignore
+      expect(currencyToFloat(undefined)).toBeUndefined();
+    });
+
+    it('should return undefined if passed null', () => {
+      // @ts-ignore
+      expect(currencyToFloat(null)).toBeUndefined();
+    });
+
+    it('should return undefined if passed a blank string', () => {
+      expect(currencyToFloat('')).toBeUndefined();
+    });
+
+    it('should return undefined if passed NaN', () => {
+      expect(currencyToFloat(NaN)).toBeUndefined();
+    });
+
+    it('should return undefined if passed a string that is not a valid currency or number', () => {
+      expect(currencyToFloat('$how and Tell')).toBeUndefined();
+    });
+
+    it('should return the number if passed a number', () => {
+      expect(currencyToFloat(55)).toBe(55);
+      expect(currencyToFloat(-100.09)).toBe(-100.09);
+    });
+
+    it('should convert US currency by default', () => {
+      expect(currencyToFloat('$7010.74')).toBe(7010.74);
+    });
+
+    it('should be able to convert other currencies', () => {
+      expect(currencyToFloat('£11.99', '£')).toBe(11.99);
+    });
+
+    it('should play nice with commas', () => {
+      expect(currencyToFloat('$102,455,289.74')).toBe(102455289.74);
+    });
+
+    it('should not worry about decimal places', () => {
+      expect(currencyToFloat('$102,455,289.7401')).toBe(102455289.7401);
     });
   });
 });

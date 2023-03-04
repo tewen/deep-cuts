@@ -37,6 +37,17 @@ acceptNoArguments(myFunction, 3, 4)(0, 1, 2); // I was called with 2 arguments.
 ```
 
 
+#### currencyToFloat(value)
+
+Ensures that the value will be parsed as represented or returns undefined. Supports alternative currency signs. Used for math, rather than formatting.
+
+```JavaScript
+const number = currencyToFloat('$463,228.89');
+
+console.log(number) // 463228.89 as number
+```
+
+
 #### csvRowsToObjects(rows, [options={queryStringsToObjects: false, jsonStringsToObjects: false, parseFloats: false, trimValues: false, listDelimiter: ','}])
 
 Takes an array of arrays as input and maps the headers out to objects in a consistent manner. Supports nesting with dot properties and array value types.

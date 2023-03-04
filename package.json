@@ -63,7 +63,7 @@
     "@types/jest": "^25.2.3",
     "@types/qs": "^6.9.7",
     "axios": "^0.24.0",
-    "data-mining-tools": "^1.1.1",
+    "data-mining-tools": "^3.0.0",
     "husky": "^7.0.1",
     "size-limit": "^5.0.1",
     "tsdx": "^0.14.1",

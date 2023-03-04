@@ -11,3 +11,12 @@ export function parseIntegerOrUndefined(value: any): number | undefined {
   const parsed = parseInt(value, 10);
   return isDecimalOrInteger(value) && !isNaN(parsed) ? parsed : undefined;
 }
+
+export function currencyToFloat(currency: string | number, sign: string = '$') {
+  return parseFloatOrUndefined(
+    (String(currency) || '')
+      .replace(new RegExp('^\\' + sign, 'ig'), '')
+      .replace(/,/gi, '')
+      .trim()
+  );
+}

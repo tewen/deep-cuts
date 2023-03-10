@@ -6,6 +6,7 @@ export {
   currencyToFloat,
   parseFloatOrUndefined,
   parseIntegerOrUndefined,
+  roundToNearestFraction,
 } from './number';
 export {
   isNil,

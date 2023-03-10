@@ -277,6 +277,17 @@ console.log(number) // 65 as number
 ```
 
 
+#### roundToNearestFraction(value, denominator, maxDecimalPlaces)
+
+Rounds a number to the nearest fractional value based on one over the denominator.
+
+```JavaScript
+const number = roundToNearestFraction(65.845, 4, 2);
+
+console.log(number) // 65.75 as a number
+```
+
+
 #### stringToBoolean(str)
 
 Usually used for url parameters, converts null, undefined, 0, false, or '' to false even if they are strings. All other values are true.

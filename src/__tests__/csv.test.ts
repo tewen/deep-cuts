@@ -437,6 +437,29 @@ describe('csv', () => {
       ]);
     });
 
+    it('should play nice with 0 as a numeric value in the row', () => {
+      expect(
+        objectsToCsvRows([
+          {
+            Red: '1',
+            Green: 0,
+            Blue: 'Ronnie James',
+            Purple: 42,
+          },
+          {
+            Red: 0,
+            Green: 'Koolaid',
+            Blue: 'Peter Griffin',
+            Maroon: 88,
+          },
+        ])
+      ).toEqual([
+        ['Red', 'Green', 'Blue', 'Purple', 'Maroon'],
+        ['1', 0, 'Ronnie James', 42, ''],
+        [0, 'Koolaid', 'Peter Griffin', '', 88],
+      ]);
+    });
+
     it('should properly map dot properties out to rows', () => {
       expect(
         objectsToCsvRows([

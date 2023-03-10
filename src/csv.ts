@@ -193,7 +193,8 @@ export function objectsToCsvRows(
       );
       const rows = flattenedBase.map(obj =>
         header.map(key => {
-          const value = getValue(obj, key, obj[key]) || '';
+          const valueFromObject = getValue(obj, key, obj[key]);
+          const value = !isEmpty(valueFromObject) ? valueFromObject : '';
           if (Array.isArray(value)) {
             return value
               .map(item => {

@@ -36,6 +36,16 @@ acceptNoArguments(myFunction)(0, 1, 2); // I was called with 0 arguments.
 acceptNoArguments(myFunction, 3, 4)(0, 1, 2); // I was called with 2 arguments.
 ```
 
+### camelCaseToTitleCase(value)
+
+Takes a classic camel case string "aStringLikeThis" and converts it to title case: "A String Like This".
+
+```JavaScript
+const titleCaseVersion = camelCaseToTitleCase('iAmCamelHearMeRoar');
+
+console.log(titleCaseVersion) // I Am Camel Hear Me Roar
+```
+
 
 #### currencyToFloat(value)
 

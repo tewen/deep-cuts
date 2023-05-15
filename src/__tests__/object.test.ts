@@ -1,5 +1,12 @@
-import { isObject, isEmpty, merge, flattenObject, isNil } from '../';
-import { keyValuePairs } from '../object';
+import {
+  isObject,
+  isEmpty,
+  merge,
+  flattenObject,
+  keyValuePairs,
+  isNil,
+  simpleCopy,
+} from '../';
 
 describe('object', () => {
   describe('isNil()', () => {
@@ -631,6 +638,86 @@ describe('object', () => {
           ['blue', null],
         ],
       ]);
+    });
+  });
+
+  describe('simpleCopy()', () => {
+    it('should return undefined if passed undefined', () => {
+      // @ts-ignore
+      expect(simpleCopy(undefined)).toBe(undefined);
+    });
+
+    it('should return null if passed null', () => {
+      // @ts-ignore
+      expect(simpleCopy(null)).toBe(null);
+    });
+
+    it('should return NaN if passed NaN', () => {
+      // @ts-ignore
+      expect(simpleCopy(NaN)).toBe(NaN);
+    });
+
+    it('should return an integer if passed an integer', () => {
+      // @ts-ignore
+      expect(simpleCopy(159)).toBe(159);
+    });
+
+    it('should return a float if passed a float', () => {
+      // @ts-ignore
+      expect(simpleCopy(-10.009)).toBe(-10.009);
+    });
+
+    it('should return an empty string if passed an empty string', () => {
+      // @ts-ignore
+      expect(simpleCopy('')).toBe('');
+    });
+
+    it('should return a string if passed a string', () => {
+      // @ts-ignore
+      expect(simpleCopy('Quick Brown Fox')).toBe('Quick Brown Fox');
+    });
+
+    it('should return an empty non hard equal object if passed an empty object', () => {
+      const obj = {};
+      expect(simpleCopy(obj)).not.toBe(obj);
+      expect(simpleCopy(obj)).toEqual(obj);
+    });
+
+    it('should return an empty non hard equal array if passed an empty array', () => {
+      const obj: any[] = [];
+      expect(simpleCopy(obj)).not.toBe(obj);
+      expect(simpleCopy(obj)).toEqual(obj);
+    });
+
+    it('should return a deep copy of an object', () => {
+      const obj = {
+        name: 'Calvin Klein',
+        age: 44,
+        meta: { birthDay: '05/10/1945' },
+      };
+      expect(simpleCopy(obj)).not.toBe(obj);
+      expect(simpleCopy(obj)).toEqual(obj);
+    });
+
+    it('should return a deep copy of an array', () => {
+      const obj = [{ name: 'Gary' }, { name: 'Lorraine' }];
+      expect(simpleCopy(obj)).not.toBe(obj);
+      expect(simpleCopy(obj)).toEqual(obj);
+    });
+
+    it('should not play super nice with complex types (i.e. Functions)', () => {
+      const obj = {
+        name: 'Calvin Klein',
+        age: 44,
+        meta: { birthDay: '05/10/1945' },
+        attack: () => console.log('Doing attack!'),
+      };
+      expect(simpleCopy(obj)).not.toBe(obj);
+      expect(simpleCopy(obj)).toEqual({
+        name: 'Calvin Klein',
+        age: 44,
+        meta: { birthDay: '05/10/1945' },
+      });
     });
   });
 });

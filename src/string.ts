@@ -9,6 +9,17 @@ export function stringToBoolean(strBoolean: any): boolean {
   );
 }
 
+export function camelCaseToTitleCase(value: string): string {
+  if (
+    !/_|-|\s/gi.test(value) &&
+    (value || '').charAt(0) !== (value || '').charAt(0).toUpperCase()
+  ) {
+    const withSpaces = (value || '').replace(/([A-Z])/g, ' $1');
+    return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
+  }
+  return value || '';
+}
+
 export function escapeForRegExp(str: string): string {
   /* eslint-disable no-useless-escape */
   return typeof str === 'string'

@@ -15,9 +15,11 @@ export {
   keyValuePairs,
   merge,
   flattenObject,
+  simpleCopy,
 } from './object';
 export { jsonStreamToObject } from './stream';
 export {
+  camelCaseToTitleCase,
   cleanSpecialCharacters,
   escapeForRegExp,
   ifNotNilString,

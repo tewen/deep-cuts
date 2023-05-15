@@ -1,4 +1,5 @@
 import {
+  camelCaseToTitleCase,
   cleanSpecialCharacters,
   ifNotNilString,
   stringToBoolean,
@@ -57,6 +58,62 @@ describe('string', () => {
 
     it('should return true if passed any non falsey object', () => {
       expect(stringToBoolean({})).toBe(true);
+    });
+  });
+
+  describe('camelCaseToTitleCase()', () => {
+    it('should return an empty string if passed undefined', () => {
+      // @ts-ignore
+      expect(camelCaseToTitleCase(undefined)).toBe('');
+    });
+
+    it('should return an empty string if passed null', () => {
+      // @ts-ignore
+      expect(camelCaseToTitleCase(null)).toBe('');
+    });
+
+    it('should return an empty string if passed an empty string', () => {
+      expect(camelCaseToTitleCase('')).toBe('');
+    });
+
+    it('should make a camel case string title case', () => {
+      expect(camelCaseToTitleCase('iAmACamelHearMeRoar')).toBe(
+        'I Am A Camel Hear Me Roar'
+      );
+    });
+
+    it('should have no effect on snake case strings', () => {
+      expect(camelCaseToTitleCase('i_am_a_camel_hear_me_roar')).toBe(
+        'i_am_a_camel_hear_me_roar'
+      );
+      expect(camelCaseToTitleCase('I_Am_A_Camel_Hear_Me_Roar')).toBe(
+        'I_Am_A_Camel_Hear_Me_Roar'
+      );
+    });
+
+    it('should have no effect on kebab case strings', () => {
+      expect(camelCaseToTitleCase('ng-component-style')).toBe(
+        'ng-component-style'
+      );
+    });
+
+    it('should have no effect on title case strings', () => {
+      expect(camelCaseToTitleCase('Dear Dr. Pennyfarthing')).toBe(
+        'Dear Dr. Pennyfarthing'
+      );
+      expect(camelCaseToTitleCase('Kooltown')).toBe('Kooltown');
+    });
+
+    it('should have no effect on camel case strings mixed with other types (Kebab, Title, Snake)', () => {
+      expect(camelCaseToTitleCase('iAmACamel-HearMeRoar')).toBe(
+        'iAmACamel-HearMeRoar'
+      );
+      expect(camelCaseToTitleCase('i_AmACamelHearMeRoar')).toBe(
+        'i_AmACamelHearMeRoar'
+      );
+      expect(camelCaseToTitleCase('iAmACamel HearMeRoar')).toBe(
+        'iAmACamel HearMeRoar'
+      );
     });
   });
 

@@ -114,3 +114,6 @@ export const keyValuePairs = (
   }
   return obj;
 };
+
+export const simpleCopy = (obj: object) =>
+  obj && isObject(obj) ? JSON.parse(JSON.stringify(obj)) : obj;

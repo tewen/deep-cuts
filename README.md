@@ -36,6 +36,16 @@ acceptNoArguments(myFunction)(0, 1, 2); // I was called with 0 arguments.
 acceptNoArguments(myFunction, 3, 4)(0, 1, 2); // I was called with 2 arguments.
 ```
 
+#### camelCaseToTitleCase(value)
+
+Takes a classic camel case string "aStringLikeThis" and converts it to title case: "A String Like This".
+
+```JavaScript
+const titleCaseVersion = camelCaseToTitleCase('iAmCamelHearMeRoar');
+
+console.log(titleCaseVersion) // I Am Camel Hear Me Roar
+```
+
 
 #### currencyToFloat(value)
 
@@ -285,6 +295,18 @@ Rounds a number to the nearest fractional value based on one over the denominato
 const number = roundToNearestFraction(65.845, 4, 2);
 
 console.log(number) // 65.75 as a number
+```
+
+#### simpleCopy(obj)
+
+Performs a deep copy of an object, but only respects json types (nothing complex like Functions).
+
+```JavaScript
+const deepCopy = simpleCopy(obj);
+
+console.log(JSON.stringify(deepCopy) === JSON.stringify(obj)) // true
+console.log(deepCopy === obj) // false
+
 ```
 
 

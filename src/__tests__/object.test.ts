@@ -506,6 +506,20 @@ describe('object', () => {
     });
   });
 
+  describe('mergeAndTransform()', () => {
+    it('should return undefined if passed undefined', () => {});
+
+    it('should return null if passed null', () => {});
+
+    it('should return an empty object if passed an empty object', () => {});
+
+    it('should return a simple merge and transform for two objects', () => {});
+
+    it('should return a simple merge and transform for four objects', () => {});
+
+    it('should ignore null and undefined values in the list of objects', () => {});
+  });
+
   describe('keyValuePairs()', () => {
     const alphabeticKeyComparator = (a: any[], b: any[]) => {
       const aKey = a[0];

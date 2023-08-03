@@ -43,6 +43,28 @@ function recursiveMerge(
 export const merge = (...args: Record<string, any>[]): Record<string, any> =>
   args.reduce((acc, obj) => recursiveMerge(acc, obj), {});
 
+export const mergeAndTransform = (
+  args: Record<string, any>[],
+  transformer: (a: any, b: any) => any
+): Record<string, any> => {
+  const validArgs = args.filter(arg => !isEmpty(arg));
+  if (validArgs?.length > 1) {
+    const [a, b] = validArgs;
+    const simpleMerge = merge({}, a, b);
+    const mergedAndTransformed = Object.keys(simpleMerge).reduce((acc, key) => {
+      const aValue = a[key];
+      const bValue = b[key];
+      acc[key] = transformer(aValue, bValue);
+      return acc;
+    }, {} as Record<string, any>);
+    return mergeAndTransform(
+      [mergedAndTransformed].concat(args.slice(2)),
+      transformer
+    );
+  }
+  return validArgs?.[0];
+};
+
 function chooseKey({
   parentKey,
   k,
